@@ -110,18 +110,18 @@ export const classes: Classe[] = [
 
 // Default data
 const defaultAgents: Agent[] = [
-  { id: "a1", matricule: "ADM-001", nom: "KOUAME", prenoms: "Jean-Baptiste", specialite: "Gestion", poste: "Secrétaire Principal", sexe: "M", dateNaissance: "1975-03-15", categorie: "Administratif" },
-  { id: "a2", matricule: "ADM-002", nom: "BAMBA", prenoms: "Fatoumata", specialite: "Comptabilité", poste: "Comptable", sexe: "F", dateNaissance: "1980-07-22", categorie: "Administratif" },
-  { id: "a3", matricule: "ENS-001", nom: "TRAORE", prenoms: "Moussa", specialite: "Mathématiques", poste: "Professeur", sexe: "M", dateNaissance: "1982-11-10", categorie: "Enseignant" },
-  { id: "a4", matricule: "ENS-002", nom: "DIALLO", prenoms: "Aminata", specialite: "Français", poste: "Professeur", sexe: "F", dateNaissance: "1985-01-28", categorie: "Enseignant" },
-  { id: "a5", matricule: "ENS-003", nom: "COULIBALY", prenoms: "Seydou", specialite: "Physique-Chimie", poste: "Professeur", sexe: "M", dateNaissance: "1979-06-05", categorie: "Enseignant" },
-  { id: "a6", matricule: "ENS-004", nom: "KONE", prenoms: "Mariam", specialite: "SVT", poste: "Professeur", sexe: "F", dateNaissance: "1988-09-18", categorie: "Enseignant" },
-  { id: "a7", matricule: "ENS-005", nom: "OUATTARA", prenoms: "Ibrahim", specialite: "Anglais", poste: "Professeur", sexe: "M", dateNaissance: "1983-04-12", categorie: "Enseignant" },
-  { id: "a8", matricule: "ENS-006", nom: "YAO", prenoms: "Adjoua", specialite: "Histoire-Géo", poste: "Professeur", sexe: "F", dateNaissance: "1986-12-01", categorie: "Enseignant" },
-  { id: "a9", matricule: "APP-001", nom: "SANOGO", prenoms: "Drissa", specialite: "Maintenance", poste: "Agent d'entretien", sexe: "M", dateNaissance: "1970-08-20", categorie: "Appui" },
-  { id: "a10", matricule: "APP-002", nom: "CAMARA", prenoms: "Kadiatou", specialite: "Restauration", poste: "Cuisinière", sexe: "F", dateNaissance: "1978-02-14", categorie: "Appui" },
-  { id: "a11", matricule: "ENS-007", nom: "CISSE", prenoms: "Mamadou", specialite: "Mécanique", poste: "Professeur Technique", sexe: "M", dateNaissance: "1981-05-30", categorie: "Enseignant" },
-  { id: "a12", matricule: "ENS-008", nom: "TOURE", prenoms: "Salimata", specialite: "Comptabilité", poste: "Professeur Technique", sexe: "F", dateNaissance: "1984-10-08", categorie: "Enseignant" },
+  { id: "a1", matricule: "ADM-001", nom: "ADJOKAN", prenoms: "Kodjo", specialite: "Gestion", poste: "Secrétaire Principal", sexe: "M", dateNaissance: "1975-03-15", categorie: "Administratif" },
+  { id: "a2", matricule: "ADM-002", nom: "AGBENYO", prenoms: "Afi", specialite: "Comptabilité", poste: "Comptable", sexe: "F", dateNaissance: "1980-07-22", categorie: "Administratif" },
+  { id: "a3", matricule: "ENS-001", nom: "KOKOU", prenoms: "Komi", specialite: "Mathématiques", poste: "Professeur", sexe: "M", dateNaissance: "1982-11-10", categorie: "Enseignant" },
+  { id: "a4", matricule: "ENS-002", nom: "AWOLI", prenoms: "Akouavi", specialite: "Français", poste: "Professeur", sexe: "F", dateNaissance: "1985-01-28", categorie: "Enseignant" },
+  { id: "a5", matricule: "ENS-003", nom: "DZRAMA", prenoms: "Sena", specialite: "Physique-Chimie", poste: "Professeur", sexe: "M", dateNaissance: "1979-06-05", categorie: "Enseignant" },
+  { id: "a6", matricule: "ENS-004", nom: "KOKO", prenoms: "Mawuli", specialite: "SVT", poste: "Professeur", sexe: "F", dateNaissance: "1988-09-18", categorie: "Enseignant" },
+  { id: "a7", matricule: "ENS-005", nom: "AGBELE", prenoms: "Kossi", specialite: "Anglais", poste: "Professeur", sexe: "M", dateNaissance: "1983-04-12", categorie: "Enseignant" },
+  { id: "a8", matricule: "ENS-006", nom: "KODZO", prenoms: "Afia", specialite: "Histoire-Géo", poste: "Professeur", sexe: "F", dateNaissance: "1986-12-01", categorie: "Enseignant" },
+  { id: "a9", matricule: "APP-001", nom: "KLOVI", prenoms: "Kodjo", specialite: "Maintenance", poste: "Agent d'entretien", sexe: "M", dateNaissance: "1970-08-20", categorie: "Appui" },
+  { id: "a10", matricule: "APP-002", nom: "KPEDE", prenoms: "Kodjo", specialite: "Restauration", poste: "Cuisinière", sexe: "F", dateNaissance: "1978-02-14", categorie: "Appui" },
+  { id: "a11", matricule: "ENS-007", nom: "KLODZI", prenoms: "Koffi", specialite: "Mécanique", poste: "Professeur Technique", sexe: "M", dateNaissance: "1981-05-30", categorie: "Enseignant" },
+  { id: "a12", matricule: "ENS-008", nom: "AGBLE", prenoms: "Akou", specialite: "Comptabilité", poste: "Professeur Technique", sexe: "F", dateNaissance: "1984-10-08", categorie: "Enseignant" },
 ];
 
 function generateDefaultEffectifs(): EffectifClasse[] {
@@ -135,12 +135,12 @@ function generateDefaultEffectifs(): EffectifClasse[] {
 export function getDefaultAppData(): AppData {
   return {
     etablissement: {
-      nom: "Lycée Technique d'Abidjan",
-      chef: "M. KOUASSI Konan Pierre",
-      region: "District d'Abidjan",
-      ville: "Abidjan",
-      prefecture: "Abidjan",
-      telephone: "+225 27 20 21 45 67",
+      nom: "Lycée Technique de Kara",
+      chef: "M. KODJO Koffi Jean",
+      region: "Région de Kara",
+      ville: "Kara",
+      prefecture: "Kara",
+      telephone: "+228 22 15 25 35",
     },
     annees: {
       "2025-2026": {
