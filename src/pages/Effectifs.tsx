@@ -1,18 +1,24 @@
 import { useState, useMemo } from "react";
-import { GraduationCap, Users, Pencil, Check, X } from "lucide-react";
+import { GraduationCap, Users, Pencil, Check, X, Plus, Trash2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/hooks/useAppStore";
 import {
-  cycles, filieres, niveaux, classes,
+  getCycles, getFilieres, getNiveaux, getClasses, addCustomClass, deleteCustomClass,
   getEffectifClasse, getTotalEffectifs,
 } from "@/data/schoolData";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 
 export default function EffectifsPage() {
-  const { currentAnnee, updateEffectif } = useAppStore();
+  const { currentAnnee, updateEffectif, selectedYear } = useAppStore();
   const effectifs = currentAnnee.effectifs;
+  const classes = getClasses(selectedYear); // Get dynamic classes for current year
+  const cycles = getCycles(selectedYear); // Get dynamic cycles for current year
+  const filieres = getFilieres(selectedYear); // Get dynamic filieres for current year
+  const niveaux = getNiveaux(selectedYear); // Get dynamic niveaux for current year
 
   const [selectedCycle, setSelectedCycle] = useState<string>("all");
   const [selectedFiliere, setSelectedFiliere] = useState<string>("all");
@@ -20,6 +26,12 @@ export default function EffectifsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editG, setEditG] = useState(0);
   const [editF, setEditF] = useState(0);
+  
+  // New class dialog state
+  const [newClassDialogOpen, setNewClassDialogOpen] = useState(false);
+  const [newClassName, setNewClassName] = useState("");
+  const [newClassNiveau, setNewClassNiveau] = useState<string>("");
+  const [newClassFiliere, setNewClassFiliere] = useState<string>("");
 
   const filteredFilieres = selectedCycle === "all" ? filieres : filieres.filter(f => f.cycleId === selectedCycle);
   const filteredNiveaux = selectedCycle === "all" ? niveaux : niveaux.filter(n => n.cycleId === selectedCycle);
@@ -50,6 +62,29 @@ export default function EffectifsPage() {
     if (editingId) {
       updateEffectif(editingId, editG, editF);
       setEditingId(null);
+    }
+  };
+
+  const handleCreateClass = () => {
+    if (newClassName && newClassNiveau && newClassFiliere) {
+      addCustomClass({
+        nom: newClassName,
+        niveauId: newClassNiveau,
+        filiereId: newClassFiliere,
+      });
+      setNewClassName("");
+      setNewClassNiveau("");
+      setNewClassFiliere("");
+      setNewClassDialogOpen(false);
+    }
+  };
+
+  const handleDeleteClass = (classeId: string) => {
+    if (confirm("Êtes-vous sûr de vouloir supprimer cette classe ?")) {
+      deleteCustomClass(classeId);
+      // Force re-render by toggling state
+      setSelectedCycle(prev => prev === "all" ? "temp" : "all");
+      setTimeout(() => setSelectedCycle("all"), 10);
     }
   };
 
@@ -98,6 +133,20 @@ export default function EffectifsPage() {
         </div>
         <div className="h-6 w-px bg-border" />
         <span className="text-sm text-muted-foreground">{filteredClasses.length} classe(s)</span>
+        
+        <Button 
+          size="sm" 
+          className="ml-auto"
+          onClick={() => {
+            // Pre-select based on current filters
+            if (selectedNiveau !== "all") setNewClassNiveau(selectedNiveau);
+            if (selectedFiliere !== "all") setNewClassFiliere(selectedFiliere);
+            setNewClassDialogOpen(true);
+          }}
+        >
+          <Plus className="h-4 w-4 mr-1" />
+          Nouvelle classe
+        </Button>
       </div>
 
       {/* Classes grid */}
@@ -116,10 +165,20 @@ export default function EffectifsPage() {
                 <h4 className="font-heading font-bold">{cl.nom}</h4>
                 <div className="flex items-center gap-1">
                   <Badge variant="outline" className="text-xs">{cycle?.nom}</Badge>
+                  {cl.estPersonnalise && (
+                    <Badge variant="secondary" className="text-xs">Personnalisée</Badge>
+                  )}
                   {!isEditing ? (
-                    <button onClick={() => startEdit(cl.id)} className="p-1 rounded-md hover:bg-muted">
-                      <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
-                    </button>
+                    <div className="flex gap-0.5">
+                      <button onClick={() => startEdit(cl.id)} className="p-1 rounded-md hover:bg-muted">
+                        <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
+                      </button>
+                      {cl.estPersonnalise && (
+                        <button onClick={() => handleDeleteClass(cl.id)} className="p-1 rounded-md hover:bg-destructive/10 text-destructive">
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      )}
+                    </div>
                   ) : (
                     <div className="flex gap-0.5">
                       <button onClick={saveEdit} className="p-1 rounded-md hover:bg-success/10 text-success">
@@ -179,6 +238,78 @@ export default function EffectifsPage() {
           );
         })}
       </div>
+
+      {/* New Class Dialog */}
+      <Dialog open={newClassDialogOpen} onOpenChange={setNewClassDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-heading">Créer une nouvelle classe</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Nom de la classe</Label>
+              <Input 
+                value={newClassName} 
+                onChange={e => setNewClassName(e.target.value)} 
+                placeholder="Ex: 2nde A3, 1ère B, etc."
+              />
+              <p className="text-xs text-muted-foreground">
+                Nom unique pour identifier la classe (ex: A3, B, C, etc.)
+              </p>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Cycle</Label>
+              <Select value={selectedCycle} onValueChange={setSelectedCycle}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner un cycle" />
+                </SelectTrigger>
+                <SelectContent>
+                  {cycles.map(c => (
+                    <SelectItem key={c.id} value={c.id}>{c.nom}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Niveau</Label>
+              <Select value={newClassNiveau} onValueChange={setNewClassNiveau}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner un niveau" />
+                </SelectTrigger>
+                <SelectContent>
+                  {filteredNiveaux.map(n => (
+                    <SelectItem key={n.id} value={n.id}>{n.nom}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Filière</Label>
+              <Select value={newClassFiliere} onValueChange={setNewClassFiliere}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner une filière" />
+                </SelectTrigger>
+                <SelectContent>
+                  {filteredFilieres.map(f => (
+                    <SelectItem key={f.id} value={f.id}>{f.nom}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setNewClassDialogOpen(false)}>
+              Annuler
+            </Button>
+            <Button onClick={handleCreateClass} disabled={!newClassName || !newClassNiveau || !newClassFiliere}>
+              Créer la classe
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

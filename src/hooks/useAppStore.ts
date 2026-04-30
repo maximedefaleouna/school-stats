@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, createContext, useContext } from "react";
 import { AppData, AnneeData, Etablissement, Agent, EffectifClasse, getDefaultAppData } from "@/data/schoolData";
+import { InspectionData, importInspectionStructure, clearConfigCache } from "@/data/schoolData";
 
 const STORAGE_KEY = "school-app-data";
 const YEAR_KEY = "school-selected-year";
@@ -39,32 +40,48 @@ export interface AppStore {
   exportYearJSON: () => string;
   importYearJSON: (json: string, year: string) => void;
   getExportData: () => { etablissement: Etablissement; annee: string; data: AnneeData };
+  
+  // Inspection config import
+  importInspectionConfig: (config: InspectionData) => void;
 }
 
 const emptyAnnee: AnneeData = { effectifs: [], agents: [] };
 
 export function useAppStoreImpl(): AppStore {
   const [data, setData] = useState<AppData>(loadData);
-  const [selectedYear, setSelectedYear] = useState<string>(() => {
+  const [selectedYear, setSelectedYearInternal] = useState<string>(() => {
     return localStorage.getItem(YEAR_KEY) || "2025-2026";
   });
 
   useEffect(() => { saveData(data); }, [data]);
-  useEffect(() => { localStorage.setItem(YEAR_KEY, selectedYear); }, [selectedYear]);
+  
+  const setSelectedYear = useCallback((year: string) => {
+    localStorage.setItem(YEAR_KEY, year);
+    clearConfigCache(); // Clear cache when changing years
+    setSelectedYearInternal(year);
+  }, []);
 
   const availableYears = Object.keys(data.annees).sort();
   const currentAnnee = data.annees[selectedYear] ?? emptyAnnee;
 
   const addYear = useCallback((year: string) => {
-    setData(prev => ({
-      ...prev,
-      annees: {
-        ...prev.annees,
-        [year]: prev.annees[year] ?? { effectifs: [], agents: [...(prev.annees[Object.keys(prev.annees)[0]]?.agents ?? [])] },
-      },
-    }));
+    setData(prev => {
+      // Copy agents from the CURRENT selected year (not first year)
+      const newYearData: AnneeData = {
+        effectifs: [],
+        agents: [...(prev.annees[selectedYear]?.agents ?? [])],
+      };
+      
+      return {
+        ...prev,
+        annees: {
+          ...prev.annees,
+          [year]: prev.annees[year] ?? newYearData,
+        },
+      };
+    });
     setSelectedYear(year);
-  }, []);
+  }, [selectedYear]);
 
   const updateEtablissement = useCallback((etab: Etablissement) => {
     setData(prev => ({ ...prev, etablissement: etab }));
@@ -134,11 +151,15 @@ export function useAppStoreImpl(): AppStore {
     data: currentAnnee,
   }), [data.etablissement, selectedYear, currentAnnee]);
 
+  const importInspectionConfig = useCallback((config: InspectionData) => {
+    importInspectionStructure(config, selectedYear); // Import for current year
+  }, [selectedYear]);
+
   return {
     data, selectedYear, availableYears, currentAnnee,
     setSelectedYear, addYear,
     updateEtablissement, setAgents, setEffectifs, updateEffectif,
-    exportYearJSON, importYearJSON, getExportData,
+    exportYearJSON, importYearJSON, getExportData, importInspectionConfig,
   };
 }
 

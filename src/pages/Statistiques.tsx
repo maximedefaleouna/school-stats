@@ -1,7 +1,7 @@
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { useAppStore } from "@/hooks/useAppStore";
 import {
-  cycles, filieres, niveaux, classes,
+  getCycles, getFilieres, getNiveaux, getClasses,
   getEffectifsByCycle, getEffectifsByFiliere, getEffectifsByNiveau, getEffectifClasse, getTotalEffectifs,
 } from "@/data/schoolData";
 
@@ -16,8 +16,12 @@ const COLORS = [
 ];
 
 export default function StatistiquesPage() {
-  const { currentAnnee } = useAppStore();
+  const { currentAnnee, selectedYear } = useAppStore();
   const effectifs = currentAnnee.effectifs;
+  const cycles = getCycles(selectedYear);
+  const filieres = getFilieres(selectedYear);
+  const niveaux = getNiveaux(selectedYear);
+  const classes = getClasses(selectedYear);
   const totals = getTotalEffectifs(effectifs);
 
   const cycleData = cycles.map((c, i) => ({

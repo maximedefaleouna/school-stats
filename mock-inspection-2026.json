@@ -1,0 +1,392 @@
+{
+  "cycles": [
+    {
+      "id": "c1",
+      "nom": "BAC GENERAL"
+    },
+    {
+      "id": "c2",
+      "nom": "BAC TECHNOLOGIQUE"
+    },
+    {
+      "id": "c3",
+      "nom": "CAP METIERS"
+    },
+    {
+      "id": "c4",
+      "nom": "BT SPECIALISE"
+    }
+  ],
+  "filieres": [
+    {
+      "id": "f1",
+      "nom": "Série A - Littéraire",
+      "cycleId": "c1"
+    },
+    {
+      "id": "f2",
+      "nom": "Série C - Mathématiques",
+      "cycleId": "c1"
+    },
+    {
+      "id": "f3",
+      "nom": "Série D - Scientifique",
+      "cycleId": "c1"
+    },
+    {
+      "id": "f4",
+      "nom": "Série E - Économique",
+      "cycleId": "c1"
+    },
+    {
+      "id": "f5",
+      "nom": "STI2D - Industrie",
+      "cycleId": "c2"
+    },
+    {
+      "id": "f6",
+      "nom": "STMG - Management",
+      "cycleId": "c2"
+    },
+    {
+      "id": "f7",
+      "nom": "Hôtellerie-Restauration",
+      "cycleId": "c2"
+    },
+    {
+      "id": "f8",
+      "nom": "Mécanique Générale",
+      "cycleId": "c3"
+    },
+    {
+      "id": "f9",
+      "nom": "Électricité Bâtiment",
+      "cycleId": "c3"
+    },
+    {
+      "id": "f10",
+      "nom": "Comptabilité-Gestion",
+      "cycleId": "c3"
+    },
+    {
+      "id": "f11",
+      "nom": "Secrétariat Bureautique",
+      "cycleId": "c3"
+    },
+    {
+      "id": "f12",
+      "nom": "Informatique Réseaux",
+      "cycleId": "c4"
+    },
+    {
+      "id": "f13",
+      "nom": "Génie Civil",
+      "cycleId": "c4"
+    }
+  ],
+  "niveaux": [
+    {
+      "id": "n1",
+      "nom": "Seconde",
+      "cycleId": "c1"
+    },
+    {
+      "id": "n2",
+      "nom": "Première",
+      "cycleId": "c1"
+    },
+    {
+      "id": "n3",
+      "nom": "Terminale",
+      "cycleId": "c1"
+    },
+    {
+      "id": "n4",
+      "nom": "2nde Technologique",
+      "cycleId": "c2"
+    },
+    {
+      "id": "n5",
+      "nom": "1ère Technologique",
+      "cycleId": "c2"
+    },
+    {
+      "id": "n6",
+      "nom": "Terminale Technologique",
+      "cycleId": "c2"
+    },
+    {
+      "id": "n7",
+      "nom": "1ère Année CAP",
+      "cycleId": "c3"
+    },
+    {
+      "id": "n8",
+      "nom": "2ème Année CAP",
+      "cycleId": "c3"
+    },
+    {
+      "id": "n9",
+      "nom": "3ème Année CAP",
+      "cycleId": "c3"
+    },
+    {
+      "id": "n10",
+      "nom": "1ère Année BT",
+      "cycleId": "c4"
+    },
+    {
+      "id": "n11",
+      "nom": "2ème Année BT",
+      "cycleId": "c4"
+    }
+  ],
+  "classes": [
+    {
+      "id": "cl1",
+      "nom": "2nde A1",
+      "niveauId": "n1",
+      "filiereId": "f1"
+    },
+    {
+      "id": "cl2",
+      "nom": "2nde A2",
+      "niveauId": "n1",
+      "filiereId": "f1"
+    },
+    {
+      "id": "cl3",
+      "nom": "2nde A3",
+      "niveauId": "n1",
+      "filiereId": "f1"
+    },
+    {
+      "id": "cl4",
+      "nom": "2nde C1",
+      "niveauId": "n1",
+      "filiereId": "f2"
+    },
+    {
+      "id": "cl5",
+      "nom": "2nde C2",
+      "niveauId": "n1",
+      "filiereId": "f2"
+    },
+    {
+      "id": "cl6",
+      "nom": "2nde D1",
+      "niveauId": "n1",
+      "filiereId": "f3"
+    },
+    {
+      "id": "cl7",
+      "nom": "2nde D2",
+      "niveauId": "n1",
+      "filiereId": "f3"
+    },
+    {
+      "id": "cl8",
+      "nom": "2nde D3",
+      "niveauId": "n1",
+      "filiereId": "f3"
+    },
+    {
+      "id": "cl9",
+      "nom": "2nde E",
+      "niveauId": "n1",
+      "filiereId": "f4"
+    },
+    {
+      "id": "cl10",
+      "nom": "1ère A",
+      "niveauId": "n2",
+      "filiereId": "f1"
+    },
+    {
+      "id": "cl11",
+      "nom": "1ère C1",
+      "niveauId": "n2",
+      "filiereId": "f2"
+    },
+    {
+      "id": "cl12",
+      "nom": "1ère C2",
+      "niveauId": "n2",
+      "filiereId": "f2"
+    },
+    {
+      "id": "cl13",
+      "nom": "1ère D1",
+      "niveauId": "n2",
+      "filiereId": "f3"
+    },
+    {
+      "id": "cl14",
+      "nom": "1ère D2",
+      "niveauId": "n2",
+      "filiereId": "f3"
+    },
+    {
+      "id": "cl15",
+      "nom": "1ère E",
+      "niveauId": "n2",
+      "filiereId": "f4"
+    },
+    {
+      "id": "cl16",
+      "nom": "Tle A",
+      "niveauId": "n3",
+      "filiereId": "f1"
+    },
+    {
+      "id": "cl17",
+      "nom": "Tle C1",
+      "niveauId": "n3",
+      "filiereId": "f2"
+    },
+    {
+      "id": "cl18",
+      "nom": "Tle C2",
+      "niveauId": "n3",
+      "filiereId": "f2"
+    },
+    {
+      "id": "cl19",
+      "nom": "Tle D1",
+      "niveauId": "n3",
+      "filiereId": "f3"
+    },
+    {
+      "id": "cl20",
+      "nom": "Tle D2",
+      "niveauId": "n3",
+      "filiereId": "f3"
+    },
+    {
+      "id": "cl21",
+      "nom": "Tle E",
+      "niveauId": "n3",
+      "filiereId": "f4"
+    },
+    {
+      "id": "cl22",
+      "nom": "2nde STI2D",
+      "niveauId": "n4",
+      "filiereId": "f5"
+    },
+    {
+      "id": "cl23",
+      "nom": "1ère STI2D",
+      "niveauId": "n5",
+      "filiereId": "f5"
+    },
+    {
+      "id": "cl24",
+      "nom": "Tle STI2D",
+      "niveauId": "n6",
+      "filiereId": "f5"
+    },
+    {
+      "id": "cl25",
+      "nom": "1ère STMG",
+      "niveauId": "n5",
+      "filiereId": "f6"
+    },
+    {
+      "id": "cl26",
+      "nom": "Tle STMG",
+      "niveauId": "n6",
+      "filiereId": "f6"
+    },
+    {
+      "id": "cl27",
+      "nom": "2nde Hôtellerie",
+      "niveauId": "n4",
+      "filiereId": "f7"
+    },
+    {
+      "id": "cl28",
+      "nom": "1ère Hôtellerie",
+      "niveauId": "n5",
+      "filiereId": "f7"
+    },
+    {
+      "id": "cl29",
+      "nom": "Tle Hôtellerie",
+      "niveauId": "n6",
+      "filiereId": "f7"
+    },
+    {
+      "id": "cl30",
+      "nom": "CAP Méca 1A",
+      "niveauId": "n7",
+      "filiereId": "f8"
+    },
+    {
+      "id": "cl31",
+      "nom": "CAP Méca 2A",
+      "niveauId": "n8",
+      "filiereId": "f8"
+    },
+    {
+      "id": "cl32",
+      "nom": "CAP Élec 1A",
+      "niveauId": "n7",
+      "filiereId": "f9"
+    },
+    {
+      "id": "cl33",
+      "nom": "CAP Élec 2A",
+      "niveauId": "n8",
+      "filiereId": "f9"
+    },
+    {
+      "id": "cl34",
+      "nom": "CAP Compta 1A",
+      "niveauId": "n7",
+      "filiereId": "f10"
+    },
+    {
+      "id": "cl35",
+      "nom": "CAP Compta 2A",
+      "niveauId": "n8",
+      "filiereId": "f10"
+    },
+    {
+      "id": "cl36",
+      "nom": "CAP Secr 1A",
+      "niveauId": "n7",
+      "filiereId": "f11"
+    },
+    {
+      "id": "cl37",
+      "nom": "CAP Secr 2A",
+      "niveauId": "n8",
+      "filiereId": "f11"
+    },
+    {
+      "id": "cl38",
+      "nom": "BT Info 1A",
+      "niveauId": "n10",
+      "filiereId": "f12"
+    },
+    {
+      "id": "cl39",
+      "nom": "BT Info 2A",
+      "niveauId": "n11",
+      "filiereId": "f12"
+    },
+    {
+      "id": "cl40",
+      "nom": "BT GC 1A",
+      "niveauId": "n10",
+      "filiereId": "f13"
+    },
+    {
+      "id": "cl41",
+      "nom": "BT GC 2A",
+      "niveauId": "n11",
+      "filiereId": "f13"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import AppLayout from "@/components/AppLayout";
 import Index from "./pages/Index";
 import Personnel from "./pages/Personnel";
 import Effectifs from "./pages/Effectifs";
+import Examen from "./pages/Examen";
 import Statistiques from "./pages/Statistiques";
 import Parametres from "./pages/Parametres";
 import NotFound from "./pages/NotFound";
@@ -24,6 +25,7 @@ function AppInner() {
             <Route path="/" element={<Index />} />
             <Route path="/personnel" element={<Personnel />} />
             <Route path="/effectifs" element={<Effectifs />} />
+            <Route path="/examen" element={<Examen />} />
             <Route path="/statistiques" element={<Statistiques />} />
             <Route path="/parametres" element={<Parametres />} />
             <Route path="*" element={<NotFound />} />

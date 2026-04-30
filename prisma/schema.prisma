@@ -1,0 +1,220 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// SCHOOL & ESTABLISHMENT MODELS
+// ============================================
+
+model Etablissement {
+  id           String   @id @default(cuid())
+  nom          String
+  chef         String
+  region       String
+  ville        String
+  prefecture   String
+  telephone    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  anneesScolaires AnneeScolaire[]
+}
+
+// ============================================
+// ACADEMIC YEAR & STRUCTURE
+// ============================================
+
+model AnneeScolaire {
+  id             String   @id @default(cuid())
+  nom            String   // e.g., "2025-2026"
+  etablissementId String
+  etablissement  Etablissement @relation(fields: [etablissementId], references: [id])
+  cycles         Cycle[]
+  niveaux        Niveau[]
+  filieres       Filiere[]
+  classes        ClassePedagogique[]
+  effectifs      Effectif[]
+  agents         Agent[]
+  examens        Examen[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([etablissementId, nom])
+}
+
+model Cycle {
+  id             String   @id @default(cuid())
+  nom            String   // e.g., "BAC", "CAP", "BT"
+  anneeScolaireId String
+  anneeScolaire  AnneeScolaire @relation(fields: [anneeScolaireId], references: [id])
+  niveaux        Niveau[]
+  filieres       Filiere[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([anneeScolaireId, nom])
+}
+
+model Filiere {
+  id             String   @id @default(cuid())
+  nom            String   // e.g., "Série A", "Mécanique Auto"
+  cycleId        String
+  cycle          Cycle    @relation(fields: [cycleId], references: [id])
+  anneeScolaireId String
+  anneeScolaire  AnneeScolaire @relation(fields: [anneeScolaireId], references: [id])
+  classes        ClassePedagogique[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([anneeScolaireId, nom])
+}
+
+model Niveau {
+  id             String   @id @default(cuid())
+  nom            String   // e.g., "Seconde", "Première", "Terminale"
+  cycleId        String
+  cycle          Cycle    @relation(fields: [cycleId], references: [id])
+  anneeScolaireId String
+  anneeScolaire  AnneeScolaire @relation(fields: [anneeScolaireId], references: [id])
+  classes        ClassePedagogique[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([anneeScolaireId, nom])
+}
+
+// ============================================
+// CLASS MANAGEMENT (PEDAGOGICAL CLASSES)
+// ============================================
+
+// Classe Pédagogique: The official class from inspection (e.g., "2nde A")
+model ClassePedagogique {
+  id              String   @id @default(cuid())
+  nom             String   // ex: "2nde A"
+  niveauId        String
+  filiereId       String
+  anneeScolaireId String
+
+  niveau          Niveau          @relation(fields: [niveauId], references: [id])
+  filiere         Filiere         @relation(fields: [filiereId], references: [id])
+  anneeScolaire   AnneeScolaire   @relation(fields: [anneeScolaireId], references: [id])
+
+  divisions       Classe[]        // Actual class divisions (e.g., "2nde A1", "2nde A2")
+  estPersonnalise Boolean         @default(false)
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@unique([anneeScolaireId, nom])
+}
+
+// Classe: Actual division created by school (e.g., "2nde A1", "2nde A2")
+model Classe {
+  id                 String   @id @default(cuid())
+  nom                String   // ex: "2nde A1", "2nde A2"
+  numero             Int      // Division number (1, 2, 3, etc.)
+  classePedagogiqueId String
+  estPersonnalise    Boolean  @default(false)
+
+  classePedagogique  ClassePedagogique @relation(fields: [classePedagogiqueId], references: [id], onDelete: Cascade)
+
+  effectif           Effectif?
+  examsClasses       ExamsClasse[]
+  
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@unique([classePedagogiqueId, numero])
+}
+
+// ============================================
+// STUDENT ENROLLMENT (EFFECTIFS)
+// ============================================
+
+model Effectif {
+  id        String  @id @default(cuid())
+  classeId  String  @unique
+  classe    Classe  @relation(fields: [classeId], references: [id])
+  garcons   Int     @default(0)
+  filles    Int     @default(0)
+  anneeScolaireId String
+  anneeScolaire  AnneeScolaire @relation(fields: [anneeScolaireId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// EXAM MANAGEMENT
+// ============================================
+
+model Examen {
+  id              String   @id @default(cuid())
+  nom             String   // e.g., "Composition 1", "Examen Blanc"
+  description     String?
+  anneeScolaireId String
+  anneeScolaire   AnneeScolaire @relation(fields: [anneeScolaireId], references: [id])
+  classes         ExamsClasse[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([anneeScolaireId, nom])
+}
+
+model ExamsClasse {
+  id        String  @id @default(cuid())
+  examenId  String
+  examen    Examen  @relation(fields: [examenId], references: [id])
+  classeId  String
+  classe    Classe  @relation(fields: [classeId], references: [id])
+  garcons   Int     @default(0)
+  filles    Int     @default(0)
+  compose   Int     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([examenId, classeId])
+}
+
+// ============================================
+// STAFF MANAGEMENT (PERSONNEL)
+// ============================================
+
+model Agent {
+  id            String   @id @default(cuid())
+  matricule     String
+  nom           String
+  prenoms       String
+  specialite    String
+  poste         String
+  sexe          Sexe
+  dateNaissance DateTime
+  categorie     CategoriePersonnel
+  anneeScolaireId String
+  anneeScolaire AnneeScolaire @relation(fields: [anneeScolaireId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([anneeScolaireId, matricule])
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum Sexe {
+  M
+  F
+}
+
+enum CategoriePersonnel {
+  Administratif
+  Enseignant
+  Appui
+}

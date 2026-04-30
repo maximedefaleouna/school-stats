@@ -40,11 +40,23 @@ export interface Niveau {
   cycleId: string;
 }
 
-export interface Classe {
+// Classe Pédagogique : Structure officielle de l'inspection (non modifiable)
+export interface ClassePedagogique {
   id: string;
-  nom: string;
+  nom: string; // ex: "2nde A", "1ère C"
   niveauId: string;
   filiereId: string;
+}
+
+// Classe : Utilisée dans Effectifs et Statistiques
+export interface Classe {
+  id: string;
+  nom: string; // ex: "2nde A1", "2nde A2"
+  niveauId: string; // Pour compatibilité avec les filtres
+  filiereId: string; // Pour compatibilité avec les filtres
+  classePedagogiqueId?: string; // Référence optionnelle à la classe pédagogique
+  numero?: number; // Numéro de variante (1, 2, 3...)
+  estPersonnalise?: boolean; // true si créée par l'école
 }
 
 export interface EffectifClasse {
@@ -91,7 +103,8 @@ export const niveaux: Niveau[] = [
   { id: "n8", nom: "2ème Année", cycleId: "c3" },
 ];
 
-export const classes: Classe[] = [
+// Default data - these are templates that schools can customize
+export const defaultClasses: Classe[] = [
   { id: "cl1", nom: "2nde A1", niveauId: "n1", filiereId: "f1" },
   { id: "cl2", nom: "2nde A2", niveauId: "n1", filiereId: "f1" },
   { id: "cl3", nom: "2nde C", niveauId: "n1", filiereId: "f2" },
@@ -107,6 +120,235 @@ export const classes: Classe[] = [
   { id: "cl13", nom: "BT Compta 1", niveauId: "n7", filiereId: "f6" },
   { id: "cl14", nom: "BT Secr 1", niveauId: "n7", filiereId: "f7" },
 ];
+
+// Dynamic data getters - use inspection data for current year if available
+let cachedCycles: Cycle[] | null = null;
+let cachedFilieres: Filiere[] | null = null;
+let cachedNiveaux: Niveau[] | null = null;
+let cachedClasses: Classe[] | null = null;
+let currentYearConfig: string | null = null; // Track which year we loaded config for
+
+// Function to clear cache when changing years
+export function clearConfigCache(): void {
+  cachedCycles = null;
+  cachedFilieres = null;
+  cachedNiveaux = null;
+  cachedClasses = null;
+  currentYearConfig = null;
+}
+
+export function getCycles(year?: string): Cycle[] {
+  // Always reload if year is provided and different
+  if (year && year !== currentYearConfig) {
+    const stored = localStorage.getItem(`school-inspection-cycles-${year}`);
+    if (stored) {
+      try {
+        cachedCycles = JSON.parse(stored);
+        currentYearConfig = year;
+        return cachedCycles;
+      } catch {}
+    }
+    // If year-specific data doesn't exist, clear cache to use fallback
+    cachedCycles = null;
+    currentYearConfig = null;
+  }
+  
+  // Return cached if available
+  if (cachedCycles) return cachedCycles;
+  
+  // Try global storage (backward compatibility)
+  try {
+    const stored = localStorage.getItem("school-inspection-cycles");
+    if (stored) {
+      cachedCycles = JSON.parse(stored);
+      return cachedCycles;
+    }
+  } catch {}
+  
+  // Fallback to defaults
+  cachedCycles = cycles;
+  return cycles;
+}
+
+export function getFilieres(year?: string): Filiere[] {
+  if (year && year !== currentYearConfig) {
+    const stored = localStorage.getItem(`school-inspection-filieres-${year}`);
+    if (stored) {
+      try {
+        cachedFilieres = JSON.parse(stored);
+        currentYearConfig = year;
+        return cachedFilieres;
+      } catch {}
+    }
+    // If year-specific data doesn't exist, clear cache to use fallback
+    cachedFilieres = null;
+    currentYearConfig = null;
+  }
+  
+  if (cachedFilieres) return cachedFilieres;
+  
+  try {
+    const stored = localStorage.getItem("school-inspection-filieres");
+    if (stored) {
+      cachedFilieres = JSON.parse(stored);
+      return cachedFilieres;
+    }
+  } catch {}
+  
+  cachedFilieres = filieres;
+  return filieres;
+}
+
+export function getNiveaux(year?: string): Niveau[] {
+  if (year && year !== currentYearConfig) {
+    const stored = localStorage.getItem(`school-inspection-niveaux-${year}`);
+    if (stored) {
+      try {
+        cachedNiveaux = JSON.parse(stored);
+        currentYearConfig = year;
+        return cachedNiveaux;
+      } catch {}
+    }
+    // If year-specific data doesn't exist, clear cache to use fallback
+    cachedNiveaux = null;
+    currentYearConfig = null;
+  }
+  
+  if (cachedNiveaux) return cachedNiveaux;
+  
+  try {
+    const stored = localStorage.getItem("school-inspection-niveaux");
+    if (stored) {
+      cachedNiveaux = JSON.parse(stored);
+      return cachedNiveaux;
+    }
+  } catch {}
+  
+  cachedNiveaux = niveaux;
+  return niveaux;
+}
+
+export function getClasses(year?: string): Classe[] {
+  if (year && year !== currentYearConfig) {
+    const stored = localStorage.getItem(`school-inspection-classes-${year}`);
+    if (stored) {
+      try {
+        const inspectionClasses = JSON.parse(stored);
+        currentYearConfig = year;
+        
+        // Merge with custom classes for this year
+        const customKey = `school-custom-classes-${year}`;
+        let customClasses: Classe[] = [];
+        try {
+          const customStored = localStorage.getItem(customKey);
+          if (customStored) customClasses = JSON.parse(customStored);
+        } catch {}
+        
+        cachedClasses = [...inspectionClasses, ...customClasses];
+        return cachedClasses;
+      } catch {}
+    }
+    // If year-specific data doesn't exist, clear cache to use fallback
+    cachedClasses = null;
+    currentYearConfig = null;
+  }
+  
+  if (cachedClasses) return cachedClasses;
+  
+  // Fallback to global storage
+  try {
+    const stored = localStorage.getItem("school-inspection-classes");
+    if (stored) {
+      const inspectionClasses = JSON.parse(stored);
+      const storedCustom = localStorage.getItem("school-custom-classes");
+      const customClasses: Classe[] = storedCustom ? JSON.parse(storedCustom) : [];
+      cachedClasses = [...inspectionClasses, ...customClasses];
+      return cachedClasses;
+    }
+  } catch {}
+  
+  cachedClasses = defaultClasses;
+  return cachedClasses;
+}
+let customClasses: Classe[] = [];
+let inspectionClasses: Classe[] = []; // Classes from inspection JSON
+
+export function addCustomClass(classe: Omit<Classe, "id" | "estPersonnalise">, year?: string): Classe {
+  const newClass: Classe = {
+    ...classe,
+    id: `custom-${Date.now()}`,
+    estPersonnalise: true,
+  };
+  customClasses.push(newClass);
+  localStorage.setItem("school-custom-classes", JSON.stringify(customClasses));
+  return newClass;
+}
+
+export function deleteCustomClass(classeId: string): boolean {
+  const index = customClasses.findIndex(c => c.id === classeId);
+  if (index >= 0) {
+    customClasses.splice(index, 1);
+    localStorage.setItem("school-custom-classes", JSON.stringify(customClasses));
+    return true;
+  }
+  return false;
+}
+
+// Import structure from inspection JSON
+export interface InspectionData {
+  cycles: Cycle[];
+  filieres: Filiere[];
+  niveaux: Niveau[];
+  classes: Classe[];
+}
+
+export function importInspectionStructure(data: InspectionData, year?: string): void {
+  try {
+    // If year is provided, store in year-specific keys
+    const suffix = year ? `-${year}` : '';
+    
+    localStorage.setItem(`school-inspection-classes${suffix}`, JSON.stringify(data.classes));
+    localStorage.setItem(`school-inspection-cycles${suffix}`, JSON.stringify(data.cycles));
+    localStorage.setItem(`school-inspection-filieres${suffix}`, JSON.stringify(data.filieres));
+    localStorage.setItem(`school-inspection-niveaux${suffix}`, JSON.stringify(data.niveaux));
+    
+    // Clear custom classes when importing new inspection data (for this year)
+    const customKey = `school-custom-classes${suffix}`;
+    localStorage.removeItem(customKey);
+  } catch (error) {
+    console.error("Error importing inspection structure:", error);
+    throw new Error("Failed to import inspection structure");
+  }
+}
+
+export function getInspectionData(): InspectionData | null {
+  try {
+    const cycles = localStorage.getItem("school-inspection-cycles");
+    const filieres = localStorage.getItem("school-inspection-filieres");
+    const niveaux = localStorage.getItem("school-inspection-niveaux");
+    const classes = localStorage.getItem("school-inspection-classes");
+    
+    if (cycles && filieres && niveaux && classes) {
+      return {
+        cycles: JSON.parse(cycles),
+        filieres: JSON.parse(filieres),
+        niveaux: JSON.parse(niveaux),
+        classes: JSON.parse(classes),
+      };
+    }
+  } catch {}
+  return null;
+}
+
+export function clearInspectionData(): void {
+  localStorage.removeItem("school-inspection-classes");
+  localStorage.removeItem("school-inspection-cycles");
+  localStorage.removeItem("school-inspection-filieres");
+  localStorage.removeItem("school-inspection-niveaux");
+}
+
+// Re-export for backward compatibility
+export const classes = getClasses();
 
 // Default data
 const defaultAgents: Agent[] = [

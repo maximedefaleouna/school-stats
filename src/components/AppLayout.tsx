@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, GraduationCap, BarChart3, School, Menu, X, Settings, Download, Upload, FileJson, FileSpreadsheet, FileText, Plus, CalendarDays } from "lucide-react";
+import { LayoutDashboard, Users, GraduationCap, BarChart3, School, Menu, X, Settings, Download, Upload, FileJson, FileSpreadsheet, FileText, Plus, CalendarDays, BookOpen } from "lucide-react";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -15,6 +15,7 @@ const navItems = [
   { to: "/", label: "Tableau de bord", icon: LayoutDashboard },
   { to: "/personnel", label: "Personnel", icon: Users },
   { to: "/effectifs", label: "Effectifs", icon: GraduationCap },
+  { to: "/examen", label: "Examens", icon: BookOpen },
   { to: "/statistiques", label: "Statistiques", icon: BarChart3 },
   { to: "/parametres", label: "Paramètres", icon: Settings },
 ];

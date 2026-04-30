@@ -1,0 +1,352 @@
+{
+  "version": "1.0",
+  "type": "inspection-configuration",
+  "generatedAt": "2026-03-05T10:00:00Z",
+  "description": "Configuration de la structure scolaire - Inspection Académique",
+  "data": {
+    "cycles": [
+      {
+        "id": "c1",
+        "nom": "BAC GENERAL",
+        "description": "Baccalauréat Général"
+      },
+      {
+        "id": "c2",
+        "nom": "BAC TECHNOLOGIQUE",
+        "description": "Baccalauréat Technologique"
+      },
+      {
+        "id": "c3",
+        "nom": "CAP METIERS",
+        "description": "Certificat d'Aptitude Professionnelle"
+      },
+      {
+        "id": "c4",
+        "nom": "BT SPECIALISE",
+        "description": "Brevet de Technicien"
+      },
+       {
+        "id": "c5",
+        "nom": "BT GENERAL",
+        "description": "Brevet de Technicien"
+      }
+    ],
+    "filieres": [
+      {
+        "id": "f1",
+        "nom": "Série A - Littéraire",
+        "cycleId": "c1",
+        "description": "Enseignement littéraire et langues"
+      },
+      {
+        "id": "f2",
+        "nom": "Série C - Mathématiques",
+        "cycleId": "c1",
+        "description": "Mathématiques et sciences exactes"
+      },
+      {
+        "id": "f3",
+        "nom": "Série D - Scientifique",
+        "cycleId": "c1",
+        "description": "Sciences naturelles et physique"
+      },
+      {
+        "id": "f4",
+        "nom": "Série E - Économique",
+        "cycleId": "c1",
+        "description": "Sciences économiques et sociales"
+      },
+      {
+        "id": "f5",
+        "nom": "STI2D - Industrie",
+        "cycleId": "c2",
+        "description": "Sciences et Technologies de l'Industrie"
+      },
+      {
+        "id": "f6",
+        "nom": "STMG - Management",
+        "cycleId": "c2",
+        "description": "Sciences et Technologies du Management"
+      },
+      {
+        "id": "f7",
+        "nom": "Hôtellerie-Restauration",
+        "cycleId": "c2",
+        "description": "Métiers de l'hôtellerie et de la restauration"
+      },
+      {
+        "id": "f8",
+        "nom": "Mécanique Générale",
+        "cycleId": "c3",
+        "description": "Techniques de mécanique industrielle"
+      },
+      {
+        "id": "f9",
+        "nom": "Électricité Bâtiment",
+        "cycleId": "c3",
+        "description": "Installation électrique et maintenance"
+      },
+      {
+        "id": "f10",
+        "nom": "Comptabilité-Gestion",
+        "cycleId": "c3",
+        "description": "Gestion comptable et financière"
+      },
+      {
+        "id": "f11",
+        "nom": "Secrétariat Bureautique",
+        "cycleId": "c3",
+        "description": "Assistanat de gestion et secrétariat"
+      },
+      {
+        "id": "f12",
+        "nom": "Informatique Réseaux",
+        "cycleId": "c4",
+        "description": "Développement informatique et réseaux"
+      },
+      {
+        "id": "f13",
+        "nom": "Génie Civil",
+        "cycleId": "c4",
+        "description": "Construction et travaux publics"
+      }
+    ],
+    "niveaux": [
+      {
+        "id": "n1",
+        "nom": "Seconde",
+        "cycleId": "c1",
+        "order": 1,
+        "description": "Première année du cycle BAC"
+      },
+      {
+        "id": "n2",
+        "nom": "Première",
+        "cycleId": "c1",
+        "order": 2,
+        "description": "Deuxième année du cycle BAC"
+      },
+      {
+        "id": "n3",
+        "nom": "Terminale",
+        "cycleId": "c1",
+        "order": 3,
+        "description": "Dernière année du cycle BAC"
+      },
+      {
+        "id": "n4",
+        "nom": "2nde Technologique",
+        "cycleId": "c2",
+        "order": 1,
+        "description": "Première année du cycle BAC Technologique"
+      },
+      {
+        "id": "n5",
+        "nom": "1ère Technologique",
+        "cycleId": "c2",
+        "order": 2,
+        "description": "Deuxième année du cycle BAC Technologique"
+      },
+      {
+        "id": "n6",
+        "nom": "Terminale Technologique",
+        "cycleId": "c2",
+        "order": 3,
+        "description": "Dernière année du cycle BAC Technologique"
+      },
+      {
+        "id": "n7",
+        "nom": "1ère Année CAP",
+        "cycleId": "c3",
+        "order": 1,
+        "description": "Première année de CAP"
+      },
+      {
+        "id": "n8",
+        "nom": "2ème Année CAP",
+        "cycleId": "c3",
+        "order": 2,
+        "description": "Deuxième année de CAP"
+      },
+      {
+        "id": "n9",
+        "nom": "3ème Année CAP",
+        "cycleId": "c3",
+        "order": 3,
+        "description": "Troisième année de CAP (optionnel)"
+      },
+      {
+        "id": "n10",
+        "nom": "1ère Année BT",
+        "cycleId": "c4",
+        "order": 1,
+        "description": "Première année de BT"
+      },
+      {
+        "id": "n11",
+        "nom": "2ème Année BT",
+        "cycleId": "c4",
+        "order": 2,
+        "description": "Deuxième année de BT"
+      }
+    ],
+    "classes": [
+      {
+        "id": "cp1",
+        "nom": "2nde A",
+        "niveauId": "n1",
+        "filiereId": "f1"
+      },
+      {
+        "id": "cp2",
+        "nom": "2nde C",
+        "niveauId": "n1",
+        "filiereId": "f2"
+      },
+      {
+        "id": "cp3",
+        "nom": "2nde D",
+        "niveauId": "n1",
+        "filiereId": "f3"
+      },
+      {
+        "id": "cp4",
+        "nom": "2nde E",
+        "niveauId": "n1",
+        "filiereId": "f4"
+      },
+      {
+        "id": "cp5",
+        "nom": "1ère A",
+        "niveauId": "n2",
+        "filiereId": "f1"
+      },
+      {
+        "id": "cp6",
+        "nom": "1ère C",
+        "niveauId": "n2",
+        "filiereId": "f2"
+      },
+      {
+        "id": "cp7",
+        "nom": "1ère D",
+        "niveauId": "n2",
+        "filiereId": "f3"
+      },
+      {
+        "id": "cp8",
+        "nom": "1ère E",
+        "niveauId": "n2",
+        "filiereId": "f4"
+      },
+      {
+        "id": "cp9",
+        "nom": "Tle A",
+        "niveauId": "n3",
+        "filiereId": "f1"
+      },
+      {
+        "id": "cp10",
+        "nom": "Tle C",
+        "niveauId": "n3",
+        "filiereId": "f2"
+      },
+      {
+        "id": "cp11",
+        "nom": "Tle D",
+        "niveauId": "n3",
+        "filiereId": "f3"
+      },
+      {
+        "id": "cp12",
+        "nom": "Tle E",
+        "niveauId": "n3",
+        "filiereId": "f4"
+      },
+      {
+        "id": "cp13",
+        "nom": "2nde STI2D",
+        "niveauId": "n4",
+        "filiereId": "f5"
+      },
+      {
+        "id": "cp14",
+        "nom": "1ère STI2D",
+        "niveauId": "n5",
+        "filiereId": "f5"
+      },
+      {
+        "id": "cp15",
+        "nom": "Tle STI2D",
+        "niveauId": "n6",
+        "filiereId": "f5"
+      },
+      {
+        "id": "cp16",
+        "nom": "1ère STMG",
+        "niveauId": "n5",
+        "filiereId": "f6"
+      },
+      {
+        "id": "cp17",
+        "nom": "Tle STMG",
+        "niveauId": "n6",
+        "filiereId": "f6"
+      },
+      {
+        "id": "cp18",
+        "nom": "2nde Hôtellerie",
+        "niveauId": "n4",
+        "filiereId": "f7"
+      },
+      {
+        "id": "cp19",
+        "nom": "1ère Hôtellerie",
+        "niveauId": "n5",
+        "filiereId": "f7"
+      },
+      {
+        "id": "cp20",
+        "nom": "Tle Hôtellerie",
+        "niveauId": "n6",
+        "filiereId": "f7"
+      },
+      {
+        "id": "cp21",
+        "nom": "CAP Méca",
+        "niveauId": "n7",
+        "filiereId": "f8"
+      },
+      {
+        "id": "cp22",
+        "nom": "CAP Élec",
+        "niveauId": "n7",
+        "filiereId": "f9"
+      },
+      {
+        "id": "cp23",
+        "nom": "CAP Compta",
+        "niveauId": "n7",
+        "filiereId": "f10"
+      },
+      {
+        "id": "cp24",
+        "nom": "CAP Secr",
+        "niveauId": "n7",
+        "filiereId": "f11"
+      },
+      {
+        "id": "cp25",
+        "nom": "BT Info",
+        "niveauId": "n10",
+        "filiereId": "f12"
+      },
+      {
+        "id": "cp26",
+        "nom": "BT GC",
+        "niveauId": "n10",
+        "filiereId": "f13"
+      }
+    ]
+  }
+}
